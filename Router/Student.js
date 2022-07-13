@@ -15,27 +15,32 @@ router.post('/',async(req,res)=>{
     const {Name,Email,Collage_id,Registration_id,Password}=req.body;
     if(!Name){
         res.send({
-            Message:"Name is missing"
+            Message:"Name is missing",
+            Status:"404"
         })
     }
-    if(!Email){
+    else if(!Email){
         res.send({
-            Message:"Email is missing"
+            Message:"Email is missing",
+            Status:"404"
         })
     }
-    if(!Collage_id){
+   else if(!Collage_id){
         res.send({
-            Message:"Collage_id is missing"
+            Message:"Collage_id is missing",
+            Status:"404"
         })
     }
-    if(!Registration_id){
+   else if(!Registration_id){
         res.send({
-            Message:"Registration_id is missing" 
+            Message:"Registration_id is missing" ,
+            Status:"404"
         })
     }
-    if(!Password){
+    else if(!Password){
         res.send({
-            Message:"Password is missig"  
+            Message:"Password is missig",
+            Status:"404"  
         })
     }
     console.log(req.body);
@@ -48,9 +53,34 @@ router.post('/',async(req,res)=>{
     })
     try{
        const s1=await student.save();
-       res.json(s1);
+       res.json({
+        s1,
+        Status:200
+    });
     }catch(err){
         res.send(err);
+    }
+})
+
+router.get('/:id',async(req,res)=>{
+    try{
+        console.log(req.params.id);
+        const student=await Student.findById(req.params.id);
+        res.json(student);
+    }catch(err){
+        res.send(err);
+    }
+
+})
+
+router.delete('/:id',async(req,res)=>{
+    try{
+        console.log(req.params.id);
+        const student=await Student.findById(req.params.id);
+        const s1=await student.remove();
+
+    }catch(err){
+     res.send(err);
     }
 })
 
